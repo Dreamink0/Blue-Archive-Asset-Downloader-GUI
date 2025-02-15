@@ -2,7 +2,6 @@
 
 <div align="center">
 本项目可以从不同服务器下载并提取碧蓝档案的素材，现支援中国服、国际服、日本服。
-基于 [ZM-Kimu/Blue-Archive-Asset-Downloader](https://github.com/ZM-Kimu/Blue-Archive-Asset-Downloader) 添加TUI。
 </div>
 
 ## 主要功能
