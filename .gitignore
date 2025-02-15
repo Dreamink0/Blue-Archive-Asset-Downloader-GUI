@@ -107,3 +107,8 @@ assets/asset_list.txt
 FlatData/
 *CharacterRelation.json
 .vscode/
+
+.git/
+.idea/
+.gitmodules
+cmake-build-debug/
