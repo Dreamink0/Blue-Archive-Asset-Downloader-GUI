@@ -12,7 +12,14 @@ using namespace ftxui;
 int main() {
   auto screen = ScreenInteractive::TerminalOutput();
 
-  std::string region;         // --region / -g（无默认值，必填项）
+  int selected_region = 0;
+  std::vector<std::string> region_options = {
+    "国服 (cn)",
+    "国际服 (gl)",
+    "日服 (jp)"
+  };
+  std::vector<std::string> region_values = {"cn", "gl", "jp"};
+
   std::string threads;        // --threads / -t（默认值 20 参考，但留空表示不调用）
   std::string version;        // --version / -v（无默认值）
   std::string raw;            // --raw / -r（默认值 "RawData" 参考）
@@ -28,7 +35,8 @@ int main() {
   std::string command_output;
   std::mutex output_mutex;
 
-  Component region_input = Input(&region, "请输入服务器区域 (cn, gl, jp)：");
+  Component region_radiobox = Radiobox(&region_options, &selected_region);
+
   Component threads_input = Input(&threads, "请输入线程数 (默认20)：");
   Component version_input = Input(&version, "请输入资源版本号 (仅国际服务器)：");
   Component raw_input = Input(&raw, "请输入未处理文件路径 (默认 RawData)：");
@@ -50,8 +58,8 @@ int main() {
 
     std::ostringstream cmd;
     cmd << "python ./scripts/main.py";
-    if (!region.empty())
-      cmd << " -g " << region;
+    cmd << " -g " << region_values[selected_region];
+
     if (!threads.empty())
       cmd << " -t " << threads;
     if (!version.empty())
@@ -108,7 +116,7 @@ int main() {
   });
 
   auto container = Container::Vertical({
-      region_input,
+      region_radiobox,
       threads_input,
       version_input,
       raw_input,
@@ -131,7 +139,7 @@ int main() {
     return vbox({
       text("Blue Archive Asset Downloader"),
       separator(),
-      region_input->Render(),
+      hbox(text("请选择服务器区域: "), region_radiobox->Render()),
       threads_input->Render(),
       version_input->Render(),
       raw_input->Render(),
